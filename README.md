@@ -1,11 +1,13 @@
-# [Dividend taxes, employment, and firm productivity](https://www.sciencedirect.com/science/article/abs/pii/S0929119921001620){target="_blank"}
+
+# <a href="https://www.sciencedirect.com/science/article/abs/pii/S0929119921001620" target="_blank">Dividend taxes, employment, and firm productivity</a>
 
 Martin Jacob, November 19, 2021
 
-## Data {-}
+## Data
 
 The data are provided by Statistics Sweden.
 
-## Code {-}
+## Code
 
-There are two files. The first file creates the dataset from the raw data. The second file runs all regressions.
+There are two files. The first file creates the dataset from the raw
+data. The second file runs all regressions.
