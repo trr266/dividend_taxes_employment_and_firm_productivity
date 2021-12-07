@@ -11,3 +11,7 @@ The data are provided by Statistics Sweden.
 
 There are two files. The first file creates the dataset from the raw
 data. The second file runs all regressions.
+
+-   Once you have the necessary raw data, please edit the project path
+    in ‘Data generation Jacob 2021 JCF.do’ (line 11) and ‘Tables &
+    Figures Jacobs 2021 JCF.do’ (line 6), with your own project folder.

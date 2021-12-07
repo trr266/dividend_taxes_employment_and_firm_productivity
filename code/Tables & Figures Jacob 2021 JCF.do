@@ -3,8 +3,10 @@
 -In this code, I generate all tables and figures shown in the paper
 ***/
 
+global project_path = "SCB_FOLDER"
 
-use "SCB_FOLDER\Project_NR__Gem\firm_panel_for_regression", clear
+
+use "${project_path}\Project_NR__Gem\firm_panel_for_regression", clear
 
  /*****************************/ 
  /************Table 1**********/
@@ -23,7 +25,7 @@ use "SCB_FOLDER\Project_NR__Gem\firm_panel_for_regression", clear
  /************Table 2**********/
  /*****************************/
  
- cd  "SCB_FOLDER\Project_NR__Gem\" 
+ cd  "${project_path}\Project_NR__Gem\" 
  /**All Firms**/
 reg d_ln_emp_w c.treatment##c.post if year>2000 & year<2011 & intests==1 ,  cluster(firm_id)
  outreg2 using "Table_2.xls", dec(4) se coefastr bracket replace
@@ -404,7 +406,7 @@ reghdfe d_ln_emp_w d_ln_fa_w if year>2000 & year<2011 & intests==1 , a(firm_id y
  
  
  
-use "SCB_FOLDER\Project_NR__Gem\firm_panel_for_regression", clear
+use "${project_path}\Project_NR__Gem\firm_panel_for_regression", clear
  /***Testing Differences within Table 4, Col 4 vs Col 6**/
  
  gen small = 1 if number_employees<10&l.number_employees<10 
@@ -422,19 +424,19 @@ use "SCB_FOLDER\Project_NR__Gem\firm_panel_for_regression", clear
  
   /***Testing Differences within Table 5, Col 1 vs Col 2**/
   
-use "SCB_FOLDER\Project_NR__Gem\firm_panel_for_regression", clear
+use "${project_path}\Project_NR__Gem\firm_panel_for_regression", clear
  
  gen dependent = lp_all_w
  gen measure = 0
  
-save "SCB_FOLDER\Project_NR__Gem\buffer", replace
+save "${project_path}\Project_NR__Gem\buffer", replace
  
-use "SCB_FOLDER\Project_NR__Gem\firm_panel_for_regression", clear
+use "${project_path}\Project_NR__Gem\firm_panel_for_regression", clear
 
  gen dependent = cp_all_w
  gen measure = 1
  
- append using "SCB_FOLDER\Project_NR__Gem\buffer"
+ append using "${project_path}\Project_NR__Gem\buffer"
  
  egen FE1=group(firm_id measure)
  egen FE2=group(measure year_ind)
@@ -449,7 +451,7 @@ outreg2 using "Table_5.xls", dec(4) se coefastr bracket append
 
  
   
-use "SCB_FOLDER\Project_NR__Gem\firm_panel_for_regression", clear
+use "${project_path}\Project_NR__Gem\firm_panel_for_regression", clear
  
  
 
@@ -622,7 +624,7 @@ reghdfe d_ln_emp_w d_ln_fa_w if sector_code==`x', a(year) cluster(firm_id) keeps
 -Now, I run the results shown in Table 4, Columns 7 & 8
 ***/
 
-use  "SCB_FOLDER\Project_NR__Gem\firm_panel_for_regression", clear
+use  "${project_path}\Project_NR__Gem\firm_panel_for_regression", clear
 
 egen company = group(firm_id)
 gen i = fixed_assets-l1.fixed_assets+depreciation
@@ -725,11 +727,11 @@ scalar max=r(max)
  
  winsor TFP, gen(TFP_w) p(0.01)
  
- cd  "SCB_FOLDER\Project_NR__Gem\" 
+ cd  "${project_path}\Project_NR__Gem\" 
   reghdfe TFP_w c.treatment##c.post sg_w re_assets_w debt_ratio ln_ta  HHI no_employee if year>2000 & year<2011 & intests==1 , a(firm_id year_ind) cluster(firm_id) keepsingleton
  outreg2 using "Table_4_Col_7_8.xls", dec(4) se coefastr bracket replace
  
- use  "SCB_FOLDER\Project_NR__Gem\firm_panel_for_regression", clear
+ use  "${project_path}\Project_NR__Gem\firm_panel_for_regression", clear
 
  
   reghdfe tfp_jsh_w c.treatment##c.post sg_w re_assets_w debt_ratio ln_ta  HHI no_employee if year>2000 & year<2011 & intests==1 , a(firm_id year_ind) cluster(firm_id) keepsingleton

@@ -8,10 +8,12 @@ June 2021:
 
 /****Generate Information from Personal Income Tax Data for Firm Data***/
 
+global project_path = "SCB_FOLDER"
+
 forvalues x=2000(1)2010{
-use "SCB_FOLDER\Project_NR__Data\entrp_lisa_`x'.dta" , clear
+use "${project_path}\Project_NR__Data\entrp_lisa_`x'.dta" , clear
 keep lop_personnr lop_peorgnr
-merge n:n lop_personnr using "SCB_FOLDER\Project_NR__Data\iot_`x'.dta" 
+merge n:n lop_personnr using "${project_path}\Project_NR__Data\iot_`x'.dta" 
 gen wage = CARB
 format %16.0g lop_personnr
 rename lop_personnr individual_id
@@ -29,24 +31,24 @@ keep firm_id number_employees sum_wages mean_wages median_wages
 duplicates drop
 gen year = `x'
 
-save "SCB_FOLDER\Project_NR__Gem\indiv_information_`x'.dta",replace
+save "${project_path}\Project_NR__Gem\indiv_information_`x'.dta",replace
 }
 
-use  "SCB_FOLDER\Project_NR__Gem\indiv_information_2000.dta", clear
-append using "SCB_FOLDER\Project_NR__Gem\indiv_information_2001.dta"
-append using "SCB_FOLDER\Project_NR__Gem\indiv_information_2002.dta"
-append using "SCB_FOLDER\Project_NR__Gem\indiv_information_2003.dta"
-append using "SCB_FOLDER\Project_NR__Gem\indiv_information_2004.dta"
-append using "SCB_FOLDER\Project_NR__Gem\indiv_information_2005.dta"
-append using "SCB_FOLDER\Project_NR__Gem\indiv_information_2006.dta"
-append using "SCB_FOLDER\Project_NR__Gem\indiv_information_2007.dta"
-append using "SCB_FOLDER\Project_NR__Gem\indiv_information_2008.dta"
-append using "SCB_FOLDER\Project_NR__Gem\indiv_information_2009.dta"
-append using "SCB_FOLDER\Project_NR__Gem\indiv_information_2010.dta"
+use  "${project_path}\Project_NR__Gem\indiv_information_2000.dta", clear
+append using "${project_path}\Project_NR__Gem\indiv_information_2001.dta"
+append using "${project_path}\Project_NR__Gem\indiv_information_2002.dta"
+append using "${project_path}\Project_NR__Gem\indiv_information_2003.dta"
+append using "${project_path}\Project_NR__Gem\indiv_information_2004.dta"
+append using "${project_path}\Project_NR__Gem\indiv_information_2005.dta"
+append using "${project_path}\Project_NR__Gem\indiv_information_2006.dta"
+append using "${project_path}\Project_NR__Gem\indiv_information_2007.dta"
+append using "${project_path}\Project_NR__Gem\indiv_information_2008.dta"
+append using "${project_path}\Project_NR__Gem\indiv_information_2009.dta"
+append using "${project_path}\Project_NR__Gem\indiv_information_2010.dta"
 
 xtset firm_id year
 
-save "SCB_FOLDER\Project_NR__Gem\indiv_information_panel.dta", replace
+save "${project_path}\Project_NR__Gem\indiv_information_panel.dta", replace
 
 /****Generate Information from Personal Income Tax Data for Firm Data****/
 
@@ -54,7 +56,7 @@ save "SCB_FOLDER\Project_NR__Gem\indiv_information_panel.dta", replace
 
 
 forvalues x=2000(1)2005{
-use "SCB_FOLDER\Project_NR__Data\k10_`x'", clear
+use "${project_path}\Project_NR__Data\k10_`x'", clear
 
 format %16.0g lop_peorgnr
 rename lop_peorgnr firm_id
@@ -124,12 +126,12 @@ profit_selling loss_selling cg_wage_tax cg_low_cap_tax cg_30_tax
 cap drop year
 gen year = `x'
 
-save "SCB_FOLDER\Project_NR__gem\k10_`x'_translated", replace
+save "${project_path}\Project_NR__gem\k10_`x'_translated", replace
 }
 
 
 forvalues x=2006(1)2011{
-use "SCB_FOLDER\Project_NR__Data\k10_`x'", clear
+use "${project_path}\Project_NR__Data\k10_`x'", clear
 
 
 format %16.0g lop_peorgnr
@@ -180,11 +182,11 @@ profit_selling loss_selling cg_wage_tax cg_low_cap_tax cg_30_tax owner_wage owne
 cap drop year
 gen year = `x'
 
-save "SCB_FOLDER\Project_NR__gem\k10_`x'_translated", replace
+save "${project_path}\Project_NR__gem\k10_`x'_translated", replace
 }
 
 
-use "SCB_FOLDER\Project_NR__Data\k10_2012", clear
+use "${project_path}\Project_NR__Data\k10_2012", clear
 
 
 format %16.0g lop_peorgnr
@@ -234,14 +236,14 @@ profit_selling loss_selling cg_wage_tax cg_low_cap_tax cg_30_tax owner_wage owne
 cap drop year
 gen year = 2012
 
-save "SCB_FOLDER\Project_NR__gem\k10_2012_translated", replace
+save "${project_path}\Project_NR__gem\k10_2012_translated", replace
 
 
-use "SCB_FOLDER\Project_NR__Gem\aktiebolag_2000_raw", clear
+use "${project_path}\Project_NR__Gem\aktiebolag_2000_raw", clear
 
 forvalues x=2001(1)2011{
     keep firm_id year nom_equity
-    append using "SCB_FOLDER\Project_NR__Gem\aktiebolag_`x'_raw"
+    append using "${project_path}\Project_NR__Gem\aktiebolag_`x'_raw"
 }
  keep firm_id year nom_equity
  
@@ -250,21 +252,21 @@ forvalues x=2001(1)2011{
  egen dup = count(y) , by(f y)
  drop if dup ~= 1
  drop dup
-save "SCB_FOLDER\Project_NR__Gem\info_for_K10", replace
+save "${project_path}\Project_NR__Gem\info_for_K10", replace
 
-use "SCB_FOLDER\Project_NR__gem\k10_2006_translated", clear
-append using  "SCB_FOLDER\Project_NR__gem\k10_2007_translated",
-append using  "SCB_FOLDER\Project_NR__gem\k10_2008_translated",
-append using  "SCB_FOLDER\Project_NR__gem\k10_2009_translated",
-append using  "SCB_FOLDER\Project_NR__gem\k10_2010_translated",
-append using  "SCB_FOLDER\Project_NR__gem\k10_2011_translated",
-append using  "SCB_FOLDER\Project_NR__gem\k10_2012_translated",
-append using  "SCB_FOLDER\Project_NR__gem\k10_2005_translated",
-append using  "SCB_FOLDER\Project_NR__gem\k10_2004_translated",
-append using  "SCB_FOLDER\Project_NR__gem\k10_2003_translated",
-append using  "SCB_FOLDER\Project_NR__gem\k10_2002_translated",
-append using  "SCB_FOLDER\Project_NR__gem\k10_2001_translated",
-append using  "SCB_FOLDER\Project_NR__gem\k10_2000_translated",
+use "${project_path}\Project_NR__gem\k10_2006_translated", clear
+append using  "${project_path}\Project_NR__gem\k10_2007_translated",
+append using  "${project_path}\Project_NR__gem\k10_2008_translated",
+append using  "${project_path}\Project_NR__gem\k10_2009_translated",
+append using  "${project_path}\Project_NR__gem\k10_2010_translated",
+append using  "${project_path}\Project_NR__gem\k10_2011_translated",
+append using  "${project_path}\Project_NR__gem\k10_2012_translated",
+append using  "${project_path}\Project_NR__gem\k10_2005_translated",
+append using  "${project_path}\Project_NR__gem\k10_2004_translated",
+append using  "${project_path}\Project_NR__gem\k10_2003_translated",
+append using  "${project_path}\Project_NR__gem\k10_2002_translated",
+append using  "${project_path}\Project_NR__gem\k10_2001_translated",
+append using  "${project_path}\Project_NR__gem\k10_2000_translated",
 
 cap drop test
 
@@ -339,7 +341,7 @@ gen share_3=buffer1/buffer2
 
 label var share_3 "Ownership Share based on Wage Base"
 
-merge n:1 firm_id year using "SCB_FOLDER\Project_NR__Gem\info_for_K10"
+merge n:1 firm_id year using "${project_path}\Project_NR__Gem\info_for_K10"
 
 drop if _m == 2
 
@@ -397,11 +399,11 @@ egen HHI=sum(buf2), by(firm_id year)
 
 
 
-save "SCB_FOLDER\Project_NR__gem\Raw_K10_Panel.dta", replace
+save "${project_path}\Project_NR__gem\Raw_K10_Panel.dta", replace
 
 /***NOW: Store individual id, then get wage income long with firm id over to the K10 form**/
 
-use  "SCB_FOLDER\Project_NR__gem\Raw_K10_Panel.dta", clear
+use  "${project_path}\Project_NR__gem\Raw_K10_Panel.dta", clear
 
 rename owner_id individual_id
 
@@ -409,12 +411,12 @@ keep individual_id year
 
 duplicates drop
 
-save "SCB_FOLDER\Project_NR__gem\Owner_IDs.dta", replace
+save "${project_path}\Project_NR__gem\Owner_IDs.dta", replace
 
 /***NOW: Calculate Wage for the Owner**/
 
 forvalues x=2000(1)2010{
-use "SCB_FOLDER\Project_NR__Data\entrp_lisa_`x'.dta" , clear
+use "${project_path}\Project_NR__Data\entrp_lisa_`x'.dta" , clear
 
 gen wage = LoneInk
 format %16.0g lop_personnr
@@ -426,38 +428,38 @@ gen year = `x'
 
 keep individual_id firm_id wage year
 
-merge n:1 individual_id year using "SCB_FOLDER\Project_NR__gem\Owner_IDs.dta"
+merge n:1 individual_id year using "${project_path}\Project_NR__gem\Owner_IDs.dta"
 
 keep if _m == 3
 
 keep individual_id year wage firm_id
 
-save "SCB_FOLDER\Project_NR__Gem\owner_wage_info_for_K10_`x'.dta",replace
+save "${project_path}\Project_NR__Gem\owner_wage_info_for_K10_`x'.dta",replace
 }
 
-use "SCB_FOLDER\Project_NR__Gem\owner_wage_info_for_K10_2000.dta", replace
-append using "SCB_FOLDER\Project_NR__Gem\owner_wage_info_for_K10_2001.dta"
-append using "SCB_FOLDER\Project_NR__Gem\owner_wage_info_for_K10_2002.dta"
-append using "SCB_FOLDER\Project_NR__Gem\owner_wage_info_for_K10_2003.dta"
-append using "SCB_FOLDER\Project_NR__Gem\owner_wage_info_for_K10_2004.dta"
-append using "SCB_FOLDER\Project_NR__Gem\owner_wage_info_for_K10_2005.dta"
-append using "SCB_FOLDER\Project_NR__Gem\owner_wage_info_for_K10_2006.dta"
-append using "SCB_FOLDER\Project_NR__Gem\owner_wage_info_for_K10_2007.dta"
-append using "SCB_FOLDER\Project_NR__Gem\owner_wage_info_for_K10_2008.dta"
-append using "SCB_FOLDER\Project_NR__Gem\owner_wage_info_for_K10_2009.dta"
-append using "SCB_FOLDER\Project_NR__Gem\owner_wage_info_for_K10_2010.dta"
+use "${project_path}\Project_NR__Gem\owner_wage_info_for_K10_2000.dta", replace
+append using "${project_path}\Project_NR__Gem\owner_wage_info_for_K10_2001.dta"
+append using "${project_path}\Project_NR__Gem\owner_wage_info_for_K10_2002.dta"
+append using "${project_path}\Project_NR__Gem\owner_wage_info_for_K10_2003.dta"
+append using "${project_path}\Project_NR__Gem\owner_wage_info_for_K10_2004.dta"
+append using "${project_path}\Project_NR__Gem\owner_wage_info_for_K10_2005.dta"
+append using "${project_path}\Project_NR__Gem\owner_wage_info_for_K10_2006.dta"
+append using "${project_path}\Project_NR__Gem\owner_wage_info_for_K10_2007.dta"
+append using "${project_path}\Project_NR__Gem\owner_wage_info_for_K10_2008.dta"
+append using "${project_path}\Project_NR__Gem\owner_wage_info_for_K10_2009.dta"
+append using "${project_path}\Project_NR__Gem\owner_wage_info_for_K10_2010.dta"
 
 
 rename individual_id owner_id
 rename firm_id firm_id2
-save "SCB_FOLDER\Project_NR__Gem\owner_wage_info_for_K10_panel.dta", replace
+save "${project_path}\Project_NR__Gem\owner_wage_info_for_K10_panel.dta", replace
 
 /***NOW: bring this over to the K10 panel, generate the key variables for the Firm-Level data**/
 
 
-use  "SCB_FOLDER\Project_NR__gem\Raw_K10_Panel.dta", clear
+use  "${project_path}\Project_NR__gem\Raw_K10_Panel.dta", clear
 
-merge n:1 owner_id year using "SCB_FOLDER\Project_NR__Gem\owner_wage_info_for_K10_panel.dta"
+merge n:1 owner_id year using "${project_path}\Project_NR__Gem\owner_wage_info_for_K10_panel.dta"
 
 egen buf_total_owner_wages = sum(wage) if  firm_id==firm_id2, by(firm_id year)
 replace buf_total_owner_wages  =0 if buf_total_owner_wages  ==.
@@ -468,7 +470,7 @@ egen total_owner_wages = sum(buf_total_owner_wages), by(firm_id year)
 keep firm_id year number_owners_CHC  total_owner_wages  HHI
 duplicates drop
 
-save "SCB_FOLDER\Project_NR__gem\K10_info_for_Firm_Data.dta", replace
+save "${project_path}\Project_NR__gem\K10_info_for_Firm_Data.dta", replace
 
 
 /****Generate Raw Firm-Level Data****/
@@ -484,7 +486,7 @@ save "SCB_FOLDER\Project_NR__gem\K10_info_for_Firm_Data.dta", replace
 
 
 forvalues x=2000(1)2006{
-use "SCB_FOLDER\Project_NR__Data\aktiebolag_`x'", clear
+use "${project_path}\Project_NR__Data\aktiebolag_`x'", clear
 
 format %16.0g lop_peorgnr
 rename lop_peorgnr firm_id
@@ -583,13 +585,13 @@ label var financial_income_neg "Financial Income Neg"
 label var fin_inc_group "Financial Income from Group"
 
 
-save  "SCB_FOLDER\Project_NR__Gem\aktiebolag_`x'_raw", replace
+save  "${project_path}\Project_NR__Gem\aktiebolag_`x'_raw", replace
 
 }
 
 
 forvalues x=2007(1)2012{
-use "SCB_FOLDER\Project_NR__Data\aktiebolag_`x'", clear
+use "${project_path}\Project_NR__Data\aktiebolag_`x'", clear
 
 
 format %16.0g lop_peorgnr
@@ -684,23 +686,23 @@ label var financial_income_neg "Financial Income Neg"
 label var fin_inc_group "Financial Income from Group"
 
 
-save  "SCB_FOLDER\Project_NR__Gem\aktiebolag_`x'_raw", replace
+save  "${project_path}\Project_NR__Gem\aktiebolag_`x'_raw", replace
 }
 
 
 
 
 
-use "SCB_FOLDER\Project_NR__Gem\aktiebolag_2000_raw", clear
+use "${project_path}\Project_NR__Gem\aktiebolag_2000_raw", clear
 forvalues x=2001(1)2011{
-    append using "SCB_FOLDER\Project_NR__Gem\aktiebolag_`x'_raw"
+    append using "${project_path}\Project_NR__Gem\aktiebolag_`x'_raw"
 }
 
 drop V0011 V0012 V0044 V0045 V0048 V0049 V0059 V0060 V0069 V0073 V0075 V0077 V0079 V0114 V0115 V0200 V0202 V0203 V0204 V0205 V0206 V0207 V0219 V0220 V0230 V0231 V0233 V0234 V0235 V0236 V0237 V0241 V0299 V0300 V0301 V0302 V0304 V0305 V0307 V0310 V0319 V0320 V0321 V0329 V0330 V0337 V0339 V0340 V0341 V0346 V0347 V0348 V0349 V0350 V0351 V0354 V0399 V0400 V0401 V0402 V0500 V0501 V0509 V0510 V0511 V0512 V0514 V0520 V0524 V0526 V0527 V0528 V0529 V0530 V0531 V0536 V0538 V0541 V0550 V0551 V0552 V0553 V0554 V0556 V0559 V0560 V0561 V0564 V0565 V0566 V0567 V0568 V0569 V0570 V0571 V0578 V0586 V0589 V0590 V0591 V0593 V0594 V0596 V0598 V0599 V0603 V0604 V0605 V0606 V0607 V0608 V0609 V0610 V0617 V0618 V0619 V0620 V0621 V0622 V0623 V0625 V0626 V0629 V0630 V0632 V0633 V0634 V0635 V0636 V0637 V0641 V0652 V0653 V0656 V0657 V0705 V0706 V0707 V0708 V0710 V0711 V0712 V0713 V0720 V0721 V0722 V0724 V0725 V0726 V0740 V0741 V0742 V0744 V0745 V0746 V0747 V0748 V0749 V0750 V0751 V0753 V0756 V0757 V0758 V0759 V0760 V0761 V0762 V0763 V0764 V0765 V0766 V0767 V0768 V0769 V0770 V0771 V0772 V0773 V0774 V0777 V0778 V0781 V0809 V0830 V0832 V0833 V0839 V0840 V0841 V0844 V0846 V0847 V0848 V0849 V0872 V0873 V0889 V0890 V0891 V0892 V0893 V0895 V0954 V0955 V0956 V0957 V0958 V0959 V0960 V0961 V0962 V0963 V0964 V0965
 
 
 
-   append using "SCB_FOLDER\Project_NR__Gem\aktiebolag_2012_raw", force
+   append using "${project_path}\Project_NR__Gem\aktiebolag_2012_raw", force
 
    
 drop V0011 V0012 V0050 V0342 V0343 V0344 V0345 V0602 V0611 V0612 V0613 V0614 V0615 V0616 V0624 V0896 V0897 V0899 V0998 V0999
@@ -833,10 +835,10 @@ compress
 
 xtset firm_id year
 
-save   "SCB_FOLDER\Project_NR__Gem\raw_firm_panel.dta", replace
+save   "${project_path}\Project_NR__Gem\raw_firm_panel.dta", replace
 
 
-use "SCB_FOLDER\Project_NR__Gem\raw_firm_panel.dta", clear
+use "${project_path}\Project_NR__Gem\raw_firm_panel.dta", clear
 
  drop if fixed_assets<100000
  drop if totalassets<100000
@@ -869,13 +871,13 @@ drop min_year buffer_new_firm
 
 cap drop _m
 
-merge 1:1 firm_id year using "SCB_FOLDER\Project_NR__Gem\indiv_information_panel.dta"
+merge 1:1 firm_id year using "${project_path}\Project_NR__Gem\indiv_information_panel.dta"
 
 drop if _m==2
 
 cap drop _merge
 
-merge 1:1 firm_id year using "SCB_FOLDER\Project_NR__gem\K10_info_for_Firm_Data.dta"
+merge 1:1 firm_id year using "${project_path}\Project_NR__gem\K10_info_for_Firm_Data.dta"
 
 
 gen CHC = (_m==3)
@@ -1006,7 +1008,7 @@ compress
 drop if total_equity<0
 
 
-merge 1:1 firm_id year using "SCB_FOLDER\Project_NR__gem\State_info_for_Firm_Data.dta"
+merge 1:1 firm_id year using "${project_path}\Project_NR__gem\State_info_for_Firm_Data.dta"
 
 drop if _m == 2
 
@@ -1095,7 +1097,7 @@ cap drop intests
  
  gen no_employee = (total_owner_wages==0)
  
-save "SCB_FOLDER\Project_NR__Gem\firm_panel_for_regression", replace
+save "${project_path}\Project_NR__Gem\firm_panel_for_regression", replace
 
 
 
@@ -1103,31 +1105,31 @@ save "SCB_FOLDER\Project_NR__Gem\firm_panel_for_regression", replace
 
 
 forvalues x=2000(1)2010{
-use "SCB_FOLDER\Project_NR__Data\entrp_lisa_`x'.dta" , clear
+use "${project_path}\Project_NR__Data\entrp_lisa_`x'.dta" , clear
 keep lop_personnr Kommun
 
 drop if Kommun==""
 
 gen year = `x'
 
-save "SCB_FOLDER\Project_NR__Gem\state_info_`x'.dta",replace
+save "${project_path}\Project_NR__Gem\state_info_`x'.dta",replace
 }
 
-use  "SCB_FOLDER\Project_NR__Gem\state_info_2000.dta", clear
-append using "SCB_FOLDER\Project_NR__Gem\state_info_2001.dta"
-append using "SCB_FOLDER\Project_NR__Gem\state_info_2002.dta"
-append using "SCB_FOLDER\Project_NR__Gem\state_info_2003.dta"
-append using "SCB_FOLDER\Project_NR__Gem\state_info_2004.dta"
-append using "SCB_FOLDER\Project_NR__Gem\state_info_2005.dta"
-append using "SCB_FOLDER\Project_NR__Gem\state_info_2006.dta"
-append using "SCB_FOLDER\Project_NR__Gem\state_info_2007.dta"
-append using "SCB_FOLDER\Project_NR__Gem\state_info_2008.dta"
-append using "SCB_FOLDER\Project_NR__Gem\state_info_2009.dta"
-append using "SCB_FOLDER\Project_NR__Gem\state_info_2010.dta"
+use  "${project_path}\Project_NR__Gem\state_info_2000.dta", clear
+append using "${project_path}\Project_NR__Gem\state_info_2001.dta"
+append using "${project_path}\Project_NR__Gem\state_info_2002.dta"
+append using "${project_path}\Project_NR__Gem\state_info_2003.dta"
+append using "${project_path}\Project_NR__Gem\state_info_2004.dta"
+append using "${project_path}\Project_NR__Gem\state_info_2005.dta"
+append using "${project_path}\Project_NR__Gem\state_info_2006.dta"
+append using "${project_path}\Project_NR__Gem\state_info_2007.dta"
+append using "${project_path}\Project_NR__Gem\state_info_2008.dta"
+append using "${project_path}\Project_NR__Gem\state_info_2009.dta"
+append using "${project_path}\Project_NR__Gem\state_info_2010.dta"
 
 format %16.0g lop_personnr
 rename lop_personnr individual_id
-merge n:1 individual_id year using "SCB_FOLDER\Project_NR__gem\Owner_IDs.dta"
+merge n:1 individual_id year using "${project_path}\Project_NR__gem\Owner_IDs.dta"
 
 keep if _m == 3
 
@@ -1138,12 +1140,12 @@ keep individual_id year lan
 
 
 
-save "SCB_FOLDER\Project_NR__Gem\owner_state_info_for_K10.dta",replace
+save "${project_path}\Project_NR__Gem\owner_state_info_for_K10.dta",replace
 
 
-use  "SCB_FOLDER\Project_NR__gem\Raw_K10_Panel.dta", clear
+use  "${project_path}\Project_NR__gem\Raw_K10_Panel.dta", clear
 rename owner_id individual_id
-merge n:1 individual_id year using "SCB_FOLDER\Project_NR__Gem\owner_state_info_for_K10.dta"
+merge n:1 individual_id year using "${project_path}\Project_NR__Gem\owner_state_info_for_K10.dta"
 
 cap drop state
 egen state = mode(lan) , by(firm_id year) maxmode
@@ -1151,4 +1153,4 @@ egen state = mode(lan) , by(firm_id year) maxmode
 keep firm_id year state 
 duplicates drop
 
-save "SCB_FOLDER\Project_NR__gem\State_info_for_Firm_Data.dta", replace
+save "${project_path}\Project_NR__gem\State_info_for_Firm_Data.dta", replace
